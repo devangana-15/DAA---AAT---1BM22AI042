@@ -1,0 +1,61 @@
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+
+# Complete the 'maximumPeople' function below.
+# The function is expected to return a LONG_INTEGER.
+# The function accepts following parameters:
+#  1. LONG_INTEGER_ARRAY p
+#  2. LONG_INTEGER_ARRAY x
+#  3. LONG_INTEGER_ARRAY y
+#  4. LONG_INTEGER_ARRAY r
+
+def maximumPeople(p, x, y, r):
+    n = len(p)
+    total_population = sum(p)
+    max_sunny_population = 0
+    
+    # Check each cloud one by one
+    for i in range(len(y)):
+        current_sunny_population = 0
+        
+        # Calculate sunny population if cloud i is removed
+        for j in range(n):
+            covered_by_other_cloud = False
+            for k in range(len(y)):
+                if k != i and abs(x[j] - y[k]) <= r[k]:
+                    covered_by_other_cloud = True
+                    break
+            
+            if not covered_by_other_cloud:
+                current_sunny_population += p[j]
+        
+        # Update maximum sunny population found so far
+        max_sunny_population = max(max_sunny_population, current_sunny_population)
+    
+    return max_sunny_population
+
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+
+    n = int(input().strip())
+
+    p = list(map(int, input().rstrip().split()))
+
+    x = list(map(int, input().rstrip().split()))
+
+    m = int(input().strip())
+
+    y = list(map(int, input().rstrip().split()))
+
+    r = list(map(int, input().rstrip().split()))
+
+    result = maximumPeople(p, x, y, r)
+
+    fptr.write(str(result) + '\n')
+
+    fptr.close()
